@@ -4,8 +4,9 @@ fun readFileAsLines(fileName: String): List<String> =
      File(fileName).useLines {it.toList() }
 
 fun <T> pairs(arr: List<T>): Sequence<Pair<T, T>> =
+
     sequence {
-    for(i in 0 until  - 1)
+    for(i in 0 until  arr.size - 1)
         for(j in 0 until arr.size - 1)
             if (i != j){
                 yield(Pair(arr[i], arr[j]))

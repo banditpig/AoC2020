@@ -1,5 +1,6 @@
 .DS_Store
 .idea/shelf
+**/.idea/sonarlint/
 /confluence/target
 /dependencies/repo
 /android.tests.dependencies

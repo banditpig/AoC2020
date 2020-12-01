@@ -1,0 +1,62 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 9b200d4b86d8c8c7cdca1ffdcf1621ad2ba59458eeafdfebfa70e935c5a604d6
+
+name:           AllDays
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/banditpig/AllDays#readme>
+homepage:       https://github.com/banditpig/AllDays#readme
+bug-reports:    https://github.com/banditpig/AllDays/issues
+author:         banditpig
+maintainer:     banditpig@gitcommit.co.uk
+copyright:      2020 banditpig
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/banditpig/AllDays
+
+library
+  exposed-modules:
+      Day1
+  other-modules:
+      Paths_AllDays
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  default-language: Haskell2010
+
+executable AllDays-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_AllDays
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      AllDays
+    , base >=4.7 && <5
+  default-language: Haskell2010
+
+test-suite AllDays-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_AllDays
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      AllDays
+    , base >=4.7 && <5
+  default-language: Haskell2010

@@ -1,3 +1,4 @@
+{-# LANGUAGE RecordWildCards #-}
 module Day2 where
 
 import Data.List
@@ -21,18 +22,17 @@ mkCritAndPwd s = crtPwd where
 
  
 valid1 ::  CritAndPwd -> Bool
-valid1 crit = count >=  lwr crit && count <=  upr crit where
-  count = length $ filter (\ch -> ch == letter crit) (pwd crit)
+valid1 CritAndPwd{..} = count >= lwr && count <= upr where
+  count = length . filter (== letter) $ pwd
 
 
 valid2 ::  CritAndPwd -> Bool
-valid2 crit = res where
-    ch1 = pwd crit !! (lwr crit - 1)
-    ch2 = pwd  crit !! (upr crit - 1)
-    letr = letter crit
-    res = ch1 == letr && ch2 /= letr
+valid2 CritAndPwd{..}  = res where
+    ch1 = pwd !! (lwr - 1)
+    ch2 = pwd !! (upr  - 1)
+    res = ch1 == letter && ch2 /= letter
         ||
-          ch2 == letr && ch1 /= letr
+          ch2 == letter && ch1 /= letter
 
 day2Main :: IO () 
 day2Main = do

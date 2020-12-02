@@ -26,7 +26,7 @@ valid1 CritAndPwd{..} = count >= lwr && count <= upr where
 
 
 valid2 ::  CritAndPwd -> Bool
-valid2 CritAndPwd{..} = 1 == count  where
+valid2 CritAndPwd{..} = count == 1  where
     count = length . filter (== letter) $ [pwd !! (lwr - 1), pwd !! (upr  - 1)]
 
    
@@ -34,7 +34,7 @@ valid2 CritAndPwd{..} = 1 == count  where
 day2Main :: IO () 
 day2Main = do
     content <- readFile "data/Day2Part1.txt"
-    let critPwds = map mkCritAndPwd (lines  content)
+    let critPwds =  mkCritAndPwd <$> lines  content
     print "Part 1."
     print $ length . filter  valid1 $ critPwds
     print "Part 2."

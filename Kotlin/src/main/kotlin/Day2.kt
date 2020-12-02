@@ -34,15 +34,14 @@ fun validate1(cr: CriteriaPwd): Boolean{
             letterCount <= cr.minMax.second
 
 }
-fun validate2(cr: CriteriaPwd): Boolean{
+fun validate2(cr: CriteriaPwd): Boolean =
 
-   // letter in min or max not both
-    val ch1 = cr.password[cr.minMax.first - 1]
-    val ch2 = cr.password[cr.minMax.second - 1]
-    return ((ch1 == cr.letter && ch2 != cr.letter)
-            ||
-            (ch2 == cr.letter && ch1 != cr.letter))
-}
+    listOf(
+            cr.password[cr.minMax.first - 1],
+            cr.password[cr.minMax.second - 1],
+    )
+            .filter { it == cr.letter }
+            .count() == 1
 
 
 fun part1(): Int{

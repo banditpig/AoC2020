@@ -1,3 +1,5 @@
+package day1
+import utils.*
 
 fun numbers(): List<Int> =
         readFileAsLines("resources/Day1Part1.txt")

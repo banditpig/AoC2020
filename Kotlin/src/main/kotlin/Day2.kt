@@ -1,7 +1,7 @@
 package day2
 import utils.*
 
-data class Criteria(private val criteriaPasswd: String){
+data class CriteriaPwd(private val criteriaPasswd: String){
     val minMax : Pair<Int,Int>
     val letter: Char
     val password: String
@@ -24,7 +24,7 @@ data class Criteria(private val criteriaPasswd: String){
                                .toInt())
    }
 }
-fun validate1(cr: Criteria): Boolean{
+fun validate1(cr: CriteriaPwd): Boolean{
     val letterCount = cr.password
             .filter {it == cr.letter }
             .count()
@@ -34,7 +34,7 @@ fun validate1(cr: Criteria): Boolean{
             letterCount <= cr.minMax.second
 
 }
-fun validate2(cr: Criteria): Boolean{
+fun validate2(cr: CriteriaPwd): Boolean{
 
    // letter in min or max not both
     val ch1 = cr.password[cr.minMax.first - 1]
@@ -48,14 +48,14 @@ fun validate2(cr: Criteria): Boolean{
 fun part1(): Int{
 
     return readFileAsLines("resources/Day2Part1.txt")
-            .map { Criteria(it) }
+            .map { CriteriaPwd(it) }
             .filter{validate1(it)}
             .count()
 }
 fun part2(): Int{
 
     return readFileAsLines("resources/Day2Part1.txt")
-            .map { Criteria(it) }
+            .map { CriteriaPwd(it) }
             .filter{validate2(it)}
             .count()
 }

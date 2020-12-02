@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9b200d4b86d8c8c7cdca1ffdcf1621ad2ba59458eeafdfebfa70e935c5a604d6
+-- hash: 26be04e70fe5e074be9a34814664c789e9ec97a83d4fc36ddbb55b2b999b677b
 
 name:           AllDays
 version:        0.1.0.0
@@ -28,12 +28,13 @@ source-repository head
 library
   exposed-modules:
       Day1
+      Day2
   other-modules:
       Paths_AllDays
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5
+      base >=4.7 && <5, split, MissingH
   default-language: Haskell2010
 
 executable AllDays-exe

@@ -16,8 +16,8 @@ mkCritAndPwd :: String -> CritAndPwd
 mkCritAndPwd s = crtPwd where 
     [crit, pwd] = splitOn ":" s
     [rng, letter] =  splitOn " "  crit 
-    [lwr, upr] =  splitOn "-"  rng 
-    crtPwd = CritAndPwd (read lwr::Int) (read upr::Int) (head letter) (strip pwd)
+    [lwr, upr] = map (read::String->Int) . splitOn "-" $  rng 
+    crtPwd = CritAndPwd lwr upr (head letter) (strip pwd)
 
  
 valid1 ::  CritAndPwd -> Bool

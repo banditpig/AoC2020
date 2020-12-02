@@ -14,7 +14,6 @@ data CritAndPwd = CritAndPwd {
 
 mkCritAndPwd :: String -> CritAndPwd
 mkCritAndPwd s = crtPwd where 
-    
     [crit, pwd] = splitOn ":" s
     [rng, letter] =  splitOn " "  crit 
     [lwr, upr] =  splitOn "-"  rng 
@@ -27,12 +26,10 @@ valid1 CritAndPwd{..} = count >= lwr && count <= upr where
 
 
 valid2 ::  CritAndPwd -> Bool
-valid2 CritAndPwd{..}  = res where
-    ch1 = pwd !! (lwr - 1)
-    ch2 = pwd !! (upr  - 1)
-    res = ch1 == letter && ch2 /= letter
-        ||
-          ch2 == letter && ch1 /= letter
+valid2 CritAndPwd{..} = 1 == count  where
+    count = length . filter (== letter) $ [pwd !! (lwr - 1), pwd !! (upr  - 1)]
+
+   
 
 day2Main :: IO () 
 day2Main = do

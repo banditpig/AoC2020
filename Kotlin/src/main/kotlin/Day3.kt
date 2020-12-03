@@ -17,20 +17,17 @@ fun itemAt( xy: Point, tm: TreeMap): Char {
     if (xy.second > tm.size) {
         return '.'
     }
-    return    tm[xy.second ][xy.first % 31]
+    return  tm[xy.second ][xy.first % 31]
 }
 
 fun allPoints(size: Int, stepF: (Point) -> Point): List<Point> =
-
-     (0 until size).fold(mutableListOf(Point(0,0))){ acc: MutableList<Pair<Int, Int>>, _ ->
-         val prev = acc.last()
-         val next = stepF(prev)
-         acc.add(next)
+     (0 until size).fold(mutableListOf(Point(0,0))){ acc, _ ->
+         acc.add(stepF(acc.last()))
          acc}
 
 fun part1(treeMap: List<String>, stepFunc: (Point) -> Point): Int{
     val all = allPoints(treeMap.size - 1) { stepFunc(it) }
-    return all.map { p -> itemAt(p, treeMap)}
+    return all.map { itemAt(it, treeMap)}
             .filter { it == tree }
             .count()
 }

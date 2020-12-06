@@ -9,4 +9,4 @@ import Day6
 import Validation
 
 main :: IO ()
-main = day6Main
+main = day4Main

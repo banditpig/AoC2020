@@ -8,12 +8,11 @@ import Validation
 -- get all blocks, these are separated by \n\n
 
 -- for each block apply words function
---    
+ 
 type Key = String
 type Val = String
 type Pair = (String, String)
 
--- splits on \n\n 
 passPortBlocks :: String  -> [String]
 passPortBlocks  = splitOn "\n\n"
 
@@ -35,22 +34,17 @@ checkPassportKeys kvs = ok where
 
 checkPassportValues :: [Pair] -> Bool
 checkPassportValues kvs = ok where 
-   -- vals = map snd kvs
-   -- fold the values togive a list of validation funcs
    results = concat $ foldl (\acc (l,r) -> [validatorDispatch l r]:acc ) [] kvs
-   ok = filter (\x ->  isLeft x ) results == []
+   -- check fails if any of the Either are Left values
+   ok = not (any   isLeft  results )
    
-allActualPassportValues ps = res where
-  oneVal kvs = concat $ foldl (\acc (l,r) -> [validatorDispatch l r]:acc ) [] kvs
-  res =map oneVal ps
-
 passportsKeysOK :: [[Pair]] -> Int
 passportsKeysOK p = res where 
   res = length . filter (== True) .  map   checkPassportKeys $ p
 
 passportsWithKeysOK :: [[Pair]] -> [[Pair]]
 passportsWithKeysOK ps = res where 
-  res = foldl (\acc pp -> if checkPassportKeys(pp) then pp :acc else acc) [] ps
+  res = foldl (\acc pp -> if checkPassportKeys pp then pp :acc else acc) [] ps
 
 passportsValuesOK :: [[Pair]] -> Int
 passportsValuesOK p = res  where  
@@ -78,8 +72,6 @@ day4Main = do
     let withKeysOK = passportsKeysOK allPassportPairs
     print withKeysOK
 
-    print ""
+    print "Part 2"
     print $ passportsValuesOK (passportsWithKeysOK allPassportPairs)
-    -- let withValsOK = passportsValuesOK withKeysOK
     
-    -- print $ allActualPassportValues (passportsWithKeysOK allPassportPairs)

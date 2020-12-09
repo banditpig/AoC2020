@@ -33,13 +33,14 @@ library
       Day4
       Day5
       Day6
+      Day8
       Validation
   other-modules:
       Paths_AllDays
   hs-source-dirs:
       src
   build-depends:
-      base >=4.7 && <5, split, MissingH, regex, regex-with-pcre, containers
+      base >=4.7 && <5, split, MissingH, regex, regex-with-pcre, containers, lens
   default-language: Haskell2010
 
 executable AllDays-exe

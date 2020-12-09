@@ -636,3 +636,4 @@ acc -6
 acc +31
 acc -11
 jmp +1
+hlt 0

@@ -7,6 +7,9 @@ import Day4
 import Day5
 import Day6
 import Day8
+import Day9
+import Day10
+import Day11
 import Validation
 
 main :: IO ()

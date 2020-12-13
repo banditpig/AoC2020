@@ -15,8 +15,9 @@ import Data.Hashable
 import GHC.Generics
 import Debug.Trace
 
-type State = (Location, Facing)
+type State = (Location, Facing, Waypoint)
 type Location = (Int, Int)
+type Waypoint = (Int, Int)
 data Facing = North | East | South | West deriving (Show)
 data Action = N Int | S Int  | E Int  | W Int  | L Int  | R Int  | F Int deriving (Show)
 type Actions = [Action]
@@ -50,17 +51,17 @@ runActions :: State -> Actions -> State
 runActions s as = foldl runAction s as
 
 runAction :: State -> Action -> State
-runAction st@((x, y), f) a = 
+runAction st@((x, y), f, w) a = 
     case a of 
-      N n  -> ((x, y - n), f)
-      S n ->  ((x, y + n), f)
-      E n ->  ((x + n, y), f)
-      W n ->  ((x - n, y), f)
+      N n  -> ((x, y + n), f, w)
+      S n ->  ((x, y - n), f, w)
+      E n ->  ((x + n, y), f, w)
+      W n ->  ((x - n, y), f, w)
       L n ->  rot (L n) st
       R n ->  rot (R n) st
       F n ->  move st n where
           move :: State -> Int -> State
-          move st@((x, y), f) n = 
+          move st@((x, y), f, w) n = 
               case f of 
                   North -> runAction st (N n)
                   East  -> runAction st (E n)
@@ -82,16 +83,16 @@ fromNum = \case
             3 -> West
 
 rot :: Action -> State -> State
-rot (L n) ((x,y), f) = ((x, y), fromNum f') where
+rot (L n) ((x,y), f, w) = ((x, y), fromNum f', w) where
     f' = ((toNum f)  - (n `div` 90)) `mod` 4 
 
-rot (R n) ((x,y), f) = ((x, y), fromNum f') where
+rot (R n) ((x,y), f, w) = ((x, y), fromNum f', w) where
     f' = ((toNum f)  + (n `div` 90)) `mod` 4 
 
 
 part1 :: Actions -> Int
 part1 as = dist where
-    finalState@((x, y), face) = runActions ((0, 0), East) as
+    finalState@((x, y), face, w) = runActions ((0, 0), East, (0,0)) as
     dist = (abs x) + (abs y)
 
 day12Main :: IO () 

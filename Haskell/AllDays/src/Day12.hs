@@ -50,25 +50,40 @@ parseActions ls = actions where
 runActions :: State -> Actions -> State
 runActions s as = foldl runAction s as
 
+runActions' :: State -> Actions -> State
+runActions' s as = foldl runAction' s as
+
+runAction' :: State -> Action -> State
+runAction' st@((x, y), f, (wx, wy)) a = 
+    case a of 
+      N n  -> ((x, y), f, (wx, wy + n))
+      S n ->  ((x, y), f, (wx, wy - n))
+      E n ->  ((x, y), f, (wx + n, wy))
+      W n ->  ((x, y), f, (wx - n, wy))
+      L n ->  rot' (L n) st
+      R n ->  rot' (R n) st
+      F n ->  ((x + n*wx, y + n*wy), f, (wx, wy))
+          
+     
+
 runAction :: State -> Action -> State
 runAction st@((x, y), f, w) a = 
     case a of 
-      N n  -> ((x, y + n), f, w)
-      S n ->  ((x, y - n), f, w)
-      E n ->  ((x + n, y), f, w)
-      W n ->  ((x - n, y), f, w)
-      L n ->  rot (L n) st
-      R n ->  rot (R n) st
-      F n ->  move st n where
-          move :: State -> Int -> State
-          move st@((x, y), f, w) n = 
-              case f of 
-                  North -> runAction st (N n)
-                  East  -> runAction st (E n)
-                  South -> runAction st (S n)
-                  West  -> runAction st (W n)
-
-
+    N n  -> ((x, y + n), f, w)
+    S n ->  ((x, y - n), f, w)
+    E n ->  ((x + n, y), f, w)
+    W n ->  ((x - n, y), f, w)
+    L n ->  rot (L n) st
+    R n ->  rot (R n) st
+    F n ->  move st n where
+        move :: State -> Int -> State
+        move st@((x, y), f, w) n = 
+            case f of 
+                North -> runAction st (N n)
+                East  -> runAction st (E n)
+                South -> runAction st (S n)
+                West  -> runAction st (W n)
+                  
 toNum :: Facing -> Int
 toNum  = \case
             North -> 0
@@ -85,17 +100,34 @@ fromNum = \case
 rot :: Action -> State -> State
 rot (L n) ((x,y), f, w) = ((x, y), fromNum f', w) where
     f' = ((toNum f)  - (n `div` 90)) `mod` 4 
-
 rot (R n) ((x,y), f, w) = ((x, y), fromNum f', w) where
     f' = ((toNum f)  + (n `div` 90)) `mod` 4 
 
+rot' :: Action -> State -> State
+rot' (L n) (p, f, w) = (p, f, last w') where
+    w' = take (n `div` 90 + 1) $ iterate anti90 w
+rot' (R n) (p, f, w) = (p, f, last w') where
+    w' = take (n `div` 90 + 1) $ iterate clock90 w
+
+clock90 = uRot (R 0)
+anti90  = uRot (L 0)
+uRot :: Action -> Waypoint -> (Int, Int)
+uRot (R _) (wx, wy) = (wy, -wx)    --- clockwise
+uRot (L _) (wx, wy) = (-wy, wx)       --- anti clockwise
 
 part1 :: Actions -> Int
 part1 as = dist where
     finalState@((x, y), face, w) = runActions ((0, 0), East, (0,0)) as
     dist = (abs x) + (abs y)
 
+part2 :: Actions -> Int
+part2 as = dist where
+    finalState@((x, y), face, w) = runActions' ((0, 0), East, (10,1)) as
+    dist = (abs x) + (abs y)
+
+
 day12Main :: IO () 
 day12Main = do
     actions <- parseActions . lines <$> readFile "../data/Day12Part1.txt"
-    print (part1 actions)
+    print (part1 actions) 
+    print (part2 actions)
